@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SVA · MEREC Industries · Executive Intelligence</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0b1727;
+      --card: rgba(15, 29, 48, 0.72);
+      --card-strong: rgba(18, 35, 57, 0.9);
+      --border: rgba(148, 163, 184, 0.13);
+      --text: #f3f7fb;
+      --muted: #94a6ba;
+      --soft: #c4d0dc;
+      --accent: #61d4c3;
+      --accent-soft: rgba(97, 212, 195, 0.10);
+      --accent-border: rgba(97, 212, 195, 0.25);
+      --danger: #ef8f8f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at 78% 12%,
+          rgba(42, 94, 117, 0.16),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 12% 82%,
+          rgba(26, 79, 94, 0.10),
+          transparent 30%
+        ),
+        var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+    }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .glass-strong {
+      background: var(--card-strong);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .soft {
+      color: var(--soft);
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    .divider {
+      border-color: var(--border);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: reveal 0.65s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.16s; }
+    .delay-3 { animation-delay: 0.24s; }
+    .delay-4 { animation-delay: 0.32s; }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .metric-value {
+      letter-spacing: -0.04em;
+    }
+
+    .signal-line {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .signal-line::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(97, 212, 195, 0.35);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .cta-button:hover {
+      background: rgba(97, 212, 195, 0.16);
+      border-color: rgba(97, 212, 195, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .access-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(42, 94, 117, 0.18),
+          transparent 35%
+        ),
+        rgba(3, 9, 17, 0.97);
+      padding: 24px;
+    }
+
+    .access-box {
+      width: 100%;
+      max-width: 430px;
+      padding: 34px;
+      border-radius: 18px;
+    }
+
+    .access-input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.035);
+      color: white;
+      outline: none;
+    }
+
+    .access-input:focus {
+      border-color: var(--accent-border);
+      box-shadow: 0 0 0 3px rgba(97, 212, 195, 0.05);
+    }
+
+    .access-button {
+      width: 100%;
+      padding: 13px;
+      border-radius: 9px;
+      border: 1px solid var(--accent-border);
+      background: rgba(97, 212, 195, 0.12);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .access-error {
+      color: var(--danger);
+      font-size: 11px;
+      min-height: 16px;
+      margin-top: 8px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    canvas {
+      max-height: 270px;
+    }
+
+    @media (max-width: 1024px) {
+      .desktop-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .sticky-rail {
+        position: relative !important;
+        top: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       ACCESS LAYER
+       ========================================================= -->
+
+  <div id="accessOverlay" class="access-overlay">
+
+    <div class="access-box glass reveal">
+
+      <div class="eyebrow mb-4">
+        Strategic Value Architect
+      </div>
+
+      <h1 class="text-2xl font-semibold tracking-tight mb-3">
+        Executive Intelligence
+      </h1>
+
+      <p class="muted text-sm leading-6 mb-7">
+        This intelligence experience has been prepared specifically
+        for the intended recipient.
+      </p>
+
+      <input
+        id="accessKey"
+        type="password"
+        class="access-input"
+        placeholder="Enter access key"
+        autocomplete="off"
+      />
+
+      <div id="accessError" class="access-error"></div>
+
+      <button
+        id="accessButton"
+        class="access-button mt-2"
+        onclick="unlockExperience()"
+      >
+        Access briefing
+      </button>
+
+      <div class="mt-6 pt-5 border-t divider">
+        <p class="text-[10px] muted leading-5">
+          Confidential · Prepared by SVA
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       EXPERIENCE
+       ========================================================= -->
+
+  <main id="experience" class="hidden">
+
+    <!-- HEADER -->
+    <header class="max-w-[1440px] mx-auto px-6 lg:px-10 pt-8">
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+        <div>
+          <div class="eyebrow mb-2">
+            SVA · Executive Intelligence Experience
+          </div>
+
+          <div class="text-xs muted" id="metaLine"></div>
+        </div>
+
+        <div class="text-xs muted">
+          Confidential · Account-specific intelligence
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- MAIN GRID -->
+    <section
+      class="max-w-[1440px] mx-auto px-6 lg:px-10 py-10 desktop-grid"
+      style="
+        display:grid;
+        grid-template-columns:minmax(0, 7fr) minmax(280px, 3fr);
+        gap:32px;
+      "
+    >
+
+      <!-- =====================================================
+           PRIMARY NARRATIVE
+           ===================================================== -->
+
+      <div>
+
+        <!-- THESIS -->
+        <section id="thesisSection" class="reveal"></section>
+
+        <!-- HERO METRICS -->
+        <section
+          id="heroMetrics"
+          class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-7 reveal delay-1"
+        ></section>
+
+        <!-- NARRATIVE -->
+        <section
+          id="narrative"
+          class="mt-8 space-y-5"
+        ></section>
+
+        <!-- FINAL BRIDGE -->
+        <section
+          id="briefingSection"
+          class="mt-10 reveal"
+        ></section>
+
+      </div>
+
+
+      <!-- =====================================================
+           RIGHT RAIL
+           ===================================================== -->
+
+      <aside class="sticky-rail" style="position:sticky;top:24px;height:max-content;">
+
+        <div
+          id="rail"
+          class="space-y-4 reveal delay-2"
+        ></div>
+
+      </aside>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="max-w-[1440px] mx-auto px-6 lg:px-10 pb-10 pt-5">
+
+      <div
+        class="pt-6 border-t divider flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+      >
+
+        <div class="text-[10px] muted">
+          Strategic Value Architect · SVA
+        </div>
+
+        <div class="text-[10px] muted">
+          Confidential intelligence · Prepared specifically for this account
+        </div>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+
+  <script>
+
+    /* =========================================================
+       SVA CASE — MEREC INDUSTRIES
+       Clock: Q4 2026 festive supply window (20 Oct → 31 Dec)
+       ========================================================= */
+
+    const SVA_CASE = {
+
+      company: "MEREC Industries",
+
+      recipient: "Executive Leadership",
+
+      date: "20 October 2026",
+
+      presentationId: "SVA-MEREC-26-01",
+
+      /*
+       * Client-side access key.
+       * Presentation-level gating only. Not server-side security.
+       */
+      accessKey: "MEREC2026",
+
+      briefingUrl: "#",
+
+
+      /* =======================================================
+         THESIS
+         ======================================================= */
+
+      thesis: {
+
+        eyebrow: "Strategic signal",
+
+        title: "The integration paradox: scale without supply control.",
+
+        statement:
+          "MEREC holds the largest formal processing footprint in Mozambican milling. It does not hold the largest revenue position — and the constraint is not throughput. It is access to wheat, and the currency to buy it.",
+
+        subtext:
+          "The Invictus acquisition was structured to resolve that constraint through global trading integration. The Mozambican state introduced a competing architecture almost simultaneously. Q4 2026 is the first live test of which architecture actually governs supply."
+
+      },
+
+
+      /* =======================================================
+         HERO METRICS
+         ======================================================= */
+
+      heroMetrics: [
+
+        {
+          label: "Processing capacity",
+          value: "1.0M MT",
+          note: "Largest formal milling footprint",
+          tone: "neutral"
+        },
+
+        {
+          label: "Silo & port storage",
+          value: "145,000 MT",
+          note: "Pre-positioning depth",
+          tone: "accent"
+        },
+
+        {
+          label: "Revenue (est.)",
+          value: "USD 48.9M",
+          note: "Third-party estimate",
+          tone: "neutral"
+        },
+
+        {
+          label: "Q4 supply window",
+          value: "72 days",
+          note: "20 Oct → 31 Dec 2026",
+          tone: "accent"
+        }
+
+      ],
+
+
+      /* =======================================================
+         ADAPTIVE NARRATIVE
+         ======================================================= */
+
+      narrative: [
+
+        {
+          type: "argument",
+
+          eyebrow: "01 · The clock",
+
+          title: "Seventy-two days decide the year.",
+
+          body:
+            "For a Mozambican flour miller, the festive window is not a routine quarter. It is the demand peak when retail shelves and institutional buyers must be stocked, and when a production stoppage is not a margin event but a market-presence event. MEREC’s own chief executive has stated the stakes directly: if the forex situation persists, “we run the risk of not being able to supply the market during the festive season, which would directly affect the population’s basic food basket.” That is the clock. The question is whether the integration architecture built to prevent exactly this outcome is functioning as designed."
+
+        },
+
+
+        {
+          type: "chart",
+
+          eyebrow: "02 · Relative position",
+
+          title: "Capacity leadership is not revenue leadership.",
+
+          description:
+            "Third-party revenue estimates, USD millions. MEREC carries the largest processing capacity in the market while sitting second on revenue — a gap that points to the price floor and the input constraint, not to milling throughput.",
+
+          chart: {
+
+            type: "bar",
+
+            labels: [
+              "Premier Milling",
+              "MEREC",
+              "CIM"
+            ],
+
+            datasets: [
+
+              {
+                label: "Revenue (USD M, est.)",
+                data: [
+                  73.9,
+                  48.9,
+                  42.1
+                ]
+              }
+
+            ]
+
+          }
+
+        },
+
+
+        {
+          type: "tension",
+
+          eyebrow: "Strategic tension",
+
+          title: "The acquisition was built for a supply problem the state redefined.",
+
+          body:
+            "The Invictus logic was vertical: pair a global grain trading book with a 1.0M MT processing base, 145,000 MT of silo storage, a port terminal at Maputo, and mills positioned at Beira, Matola and Nacala. The arithmetic projected a USD 272M addition to consolidated revenue and a doubling of EBITDA. Then, from May 2026, wheat imports were centralised through the Institute of Cereals, removing direct import autonomy from private millers. A miller with capacity but no direct import mandate is a processor dependent on state allocation timing. A trading book can source wheat globally. It cannot unilaterally clear it through a centralised gate."
+
+        },
+
+
+        {
+          type: "signal",
+
+          eyebrow: "SVA signal",
+
+          items: [
+
+            "Acquisition–Integration Friction: the integration model is being tested before it has matured, inside a 72-day window that does not allow for a learning curve.",
+
+            "The binding constraint has migrated from milling capacity to import allocation timing — a variable MEREC does not control and cannot hedge with storage alone.",
+
+            "A parallel informal market sets the price floor while bearing neither fortification cost nor forex cost, compressing the formal margin from below as the import gate tightens from above."
+
+          ]
+
+        },
+
+
+        {
+          type: "timeline",
+
+          eyebrow: "03 · Sequence",
+
+          title: "How the two architectures converged on Q4.",
+
+          items: [
+
+            {
+              period: "FEB 2025",
+              title: "Invictus completes the acquisition",
+              body: "Vertical integration thesis activated: global trading book plus domestic milling footprint, with a projected USD 272M revenue contribution and EBITDA more than doubling in 2025."
+            },
+
+            {
+              period: "MAY 2026",
+              title: "Wheat imports centralised via ICM",
+              body: "Direct import autonomy removed from private millers, on a stated rationale of controlling forex leakage and over-invoicing, with estimated annual losses of USD 100M. Industry response cited 30,000 jobs and USD 500M in investment at risk."
+            },
+
+            {
+              period: "OCT 2026",
+              title: "Enforcement becomes visible",
+              body: "A competitor mounts a legal challenge to the regime and has cargo seized at the Port of Matola for alleged import irregularities. The contest is live as the festive window opens."
+            },
+
+            {
+              period: "MID-NOV 2026",
+              title: "The allocation threshold",
+              body: "If wheat allocation is not confirmed in time to pre-position production, the 72-day window cannot be recovered. This is the decision point the architecture is actually being judged on."
+            },
+
+            {
+              period: "31 DEC 2026",
+              title: "The window closes",
+              body: "Whatever the integration model delivers by this date defines the credibility of the acquisition thesis into 2027 — and the funding available for the moat-building work that follows."
+            }
+
+          ]
+
+        },
+
+
+        {
+          type: "comparison",
+
+          eyebrow: "04 · The two constraints",
+
+          title: "MEREC is squeezed between a state gate and an informal floor.",
+
+          left: {
+
+            label: "Above: the import gate",
+
+            items: [
+              "Centralised wheat allocation via ICM from May 2026",
+              "Direct import autonomy removed from private millers",
+              "Allocation timing now governs production timing",
+              "Live legal contest over the regime’s legality",
+              "Trading-book reach does not equal clearance authority"
+            ]
+
+          },
+
+          right: {
+
+            label: "Below: the price floor",
+
+            items: [
+              "Non-fortified maize flour entering at scale",
+              "Below-cost pasta imports undercutting the formal range",
+              "Fortification compliance under Decree 47/2025 carried only by formal millers",
+              "Beira factory truck congestion compressing distribution efficiency",
+              "SADC export barriers limiting the regional outlet"
+            ]
+
+          }
+
+        },
+
+
+        {
+          type: "question",
+
+          eyebrow: "Executive question",
+
+          title:
+            "If Q4 supply continuity depends on an import allocation we do not control, what does the Invictus integration actually give us that we did not have before — and is that enough to protect the festive window?",
+
+          body:
+            "The answer sits at the intersection of three unresolved variables: the timing and volume of ICM allocation, the operational readiness of the Invictus channel to function through the centralised regime rather than around it, and the speed at which institutional buyers can be converted to contracted supply that insulates volume from spot and informal-price exposure."
+
+        }
+
+      ],
+
+
+      /* =======================================================
+         RIGHT RAIL
+         ======================================================= */
+
+      rail: {
+
+        value: {
+
+          label: "Core signal",
+
+          value: "Acquisition–Integration Friction",
+
+          note:
+            "Three constraints converge inside one 72-day window, and the integration model is being tested before it has matured."
+
+        },
+
+        decision: {
+
+          label: "Decision lens",
+
+          value: "Q4 supply continuity",
+
+          note:
+            "Contracted volume, milling uptime and margin protection through 31 December — not market share."
+
+        },
+
+        metric: {
+
+          label: "Key metric",
+
+          value: "USD 272M",
+
+          note:
+            "Projected revenue contribution underpinning the Invictus integration thesis."
+
+        },
+
+        miniChart: {
+
+          enabled: true,
+
+          labels: [
+            "Premier Milling",
+            "MEREC",
+            "CIM"
+          ],
+
+          data: [
+            73.9,
+            48.9,
+            42.1
+          ]
+
+        }
+
+      },
+
+
+      /* =======================================================
+         UNRESOLVED QUESTION
+         ======================================================= */
+
+      unresolvedQuestion: {
+
+        eyebrow: "What remains unresolved",
+
+        title:
+          "The tension is visible. The mechanism behind it is not.",
+
+        body:
+          "The visible evidence establishes the convergence. It does not resolve the allocation decision tree, the legal levers available to a licensed operator, the unit economics of contracted versus spot Q4 volume, or the contingency sequencing if allocation slips past mid-November."
+
+      },
+
+
+      /* =======================================================
+         BRIEFING / CTA
+         ======================================================= */
+
+      briefing: {
+
+        eyebrow: "Strategic Briefing",
+
+        title:
+          "The full assessment goes further than the window.",
+
+        body:
+          "The private Strategic Briefing maps the ICM allocation decision tree, the regulatory and legal levers open to MEREC as a licensed operator, the unit economics of contracted versus spot Q4 volume mix, the contingency sequencing if allocation slips, and the Q1 2027 architecture that converts festive-window liquidity into a durable compliance and supply-certainty moat.",
+
+        ctaLabel:
+          "View your Strategic Briefing",
+
+        ctaUrl:
+          "#",
+
+        conversationLabel:
+          "Request a 20-minute conversation",
+
+        conversationEmail:
+          "oderoian.sva@gmail.com"
+
+      }
+
+    };
+
+
+    /* =========================================================
+       UTILITY
+       ========================================================= */
+
+    function escapeHTML(value) {
+
+      if (value === undefined || value === null) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================================
+       THESIS
+       ========================================================= */
+
+    function renderThesis() {
+
+      const t = SVA_CASE.thesis;
+
+      document.getElementById("thesisSection").innerHTML = `
+
+        <div class="max-w-4xl">
+
+          <div class="eyebrow mb-4">
+            ${escapeHTML(t.eyebrow)}
+          </div>
+
+          <h1
+            class="text-4xl md:text-5xl lg:text-[58px]
+                   leading-[1.02] tracking-[-0.045em]
+                   font-semibold"
+          >
+            ${escapeHTML(t.title)}
+          </h1>
+
+          <p
+            class="mt-6 text-lg md:text-xl
+                   leading-8 soft max-w-3xl"
+          >
+            ${escapeHTML(t.statement)}
+          </p>
+
+          <p
+            class="mt-4 text-sm leading-7 muted max-w-2xl"
+          >
+            ${escapeHTML(t.subtext)}
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       HERO METRICS
+       ========================================================= */
+
+    function renderHeroMetrics() {
+
+      const container = document.getElementById("heroMetrics");
+
+      container.innerHTML = "";
+
+      SVA_CASE.heroMetrics.forEach(metric => {
+
+        const tone =
+          metric.tone === "accent"
+            ? "accent"
+            : "text-white";
+
+        container.innerHTML += `
+
+          <div class="glass rounded-xl p-5">
+
+            <div class="text-[10px] uppercase tracking-[0.14em] muted">
+              ${escapeHTML(metric.label)}
+            </div>
+
+            <div
+              class="metric-value text-2xl md:text-3xl
+                     font-semibold mt-3 ${tone}"
+            >
+              ${escapeHTML(metric.value)}
+            </div>
+
+            <div class="text-[11px] muted mt-2">
+              ${escapeHTML(metric.note)}
+            </div>
+
+          </div>
+
+        `;
+
+      });
+
+    }
+
+
+    /* =========================================================
+       NARRATIVE BLOCK ROUTER
+       ========================================================= */
+
+    function renderBlock(block, index) {
+
+      switch (block.type) {
+
+        case "argument":
+          return renderArgument(block, index);
+
+        case "tension":
+          return renderTension(block, index);
+
+        case "signal":
+          return renderSignal(block, index);
+
+        case "chart":
+          return renderChartBlock(block, index);
+
+        case "metric":
+          return renderMetricBlock(block, index);
+
+        case "comparison":
+          return renderComparison(block, index);
+
+        case "timeline":
+          return renderTimeline(block, index);
+
+        case "opportunity":
+          return renderOpportunity(block, index);
+
+        case "question":
+          return renderQuestion(block, index);
+
+        case "evidence":
+          return renderEvidence(block, index);
+
+        default:
+          return "";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       ARGUMENT
+       ========================================================= */
+
+    function renderArgument(block, index) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7 md:p-8 reveal">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || `Observation ${index + 1}`)}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="mt-4 text-sm md:text-[15px] leading-7 soft max-w-3xl">
+            ${escapeHTML(block.body)}
+          </p>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       TENSION
+       ========================================================= */
+
+    function renderTension(block) {
+
+      return `
+
+        <article
+          class="rounded-2xl p-7 md:p-8"
+          style="
+            background:rgba(97,212,195,0.045);
+            border:1px solid rgba(97,212,195,0.16);
+          "
+        >
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Strategic tension")}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="mt-4 text-sm md:text-[15px] leading-7 soft max-w-3xl">
+            ${escapeHTML(block.body)}
+          </p>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       SIGNAL
+       ========================================================= */
+
+    function renderSignal(block) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7 md:p-8">
+
+          <div class="eyebrow mb-5">
+            ${escapeHTML(block.eyebrow || "Signal")}
+          </div>
+
+          <div class="space-y-5">
+
+            ${(block.items || []).map(item => `
+
+              <div class="signal-line">
+
+                <p class="text-sm md:text-[15px] leading-7 soft">
+                  ${escapeHTML(item)}
+                </p>
+
+              </div>
+
+            `).join("")}
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       CHART
+       ========================================================= */
+
+    function renderChartBlock(block, index) {
+
+      const canvasId = `chart-${index}`;
+
+      setTimeout(() => {
+
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas) return;
+
+        new Chart(canvas, {
+
+          type: block.chart.type || "line",
+
+          data: {
+
+            labels: block.chart.labels,
+
+            datasets: block.chart.datasets.map((dataset, datasetIndex) => ({
+
+              label: dataset.label,
+
+              data: dataset.data,
+
+              borderColor:
+                datasetIndex === 0
+                  ? "#61d4c3"
+                  : "rgba(148,163,184,0.55)",
+
+              backgroundColor:
+                datasetIndex === 0
+                  ? "rgba(97,212,195,0.22)"
+                  : "rgba(148,163,184,0.10)",
+
+              borderWidth: 2,
+
+              pointRadius: 3,
+
+              pointHoverRadius: 5,
+
+              tension: 0.35,
+
+              fill: datasetIndex === 0 && (block.chart.type || "line") === "line"
+
+            }))
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+              legend: {
+
+                labels: {
+
+                  color: "#94a6ba",
+
+                  font: {
+                    family: "Inter",
+                    size: 10
+                  }
+
+                }
+
+              }
+
+            },
+
+            scales: {
+
+              x: {
+
+                ticks: {
+                  color: "#708298"
+                },
+
+                grid: {
+                  color: "rgba(148,163,184,0.06)"
+                }
+
+              },
+
+              y: {
+
+                ticks: {
+                  color: "#708298"
+                },
+
+                grid: {
+                  color: "rgba(148,163,184,0.06)"
+                }
+
+              }
+
+            }
+
+          }
+
+        });
+
+      }, 50);
+
+      return `
+
+        <article class="glass rounded-2xl p-7 md:p-8">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Performance")}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="text-sm muted leading-6 mt-3 max-w-2xl">
+            ${escapeHTML(block.description || "")}
+          </p>
+
+          <div class="mt-7 h-[270px]">
+            <canvas id="${canvasId}"></canvas>
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       METRIC
+       ========================================================= */
+
+    function renderMetricBlock(block) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7">
+
+          <div class="eyebrow mb-4">
+            ${escapeHTML(block.eyebrow || "Metric")}
+          </div>
+
+          <div class="text-4xl font-semibold tracking-tight">
+            ${escapeHTML(block.value)}
+          </div>
+
+          <h2 class="text-lg font-semibold mt-4">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="text-sm muted leading-7 mt-3 max-w-2xl">
+            ${escapeHTML(block.body)}
+          </p>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       COMPARISON
+       ========================================================= */
+
+    function renderComparison(block) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7 md:p-8">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Comparison")}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <div class="grid md:grid-cols-2 gap-4 mt-7">
+
+            <div
+              class="rounded-xl p-5"
+              style="
+                background:rgba(255,255,255,0.025);
+                border:1px solid var(--border);
+              "
+            >
+
+              <div class="text-xs font-semibold mb-4">
+                ${escapeHTML(block.left.label)}
+              </div>
+
+              <div class="space-y-3">
+
+                ${block.left.items.map(item => `
+
+                  <div class="text-sm muted leading-6">
+                    ${escapeHTML(item)}
+                  </div>
+
+                `).join("")}
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="rounded-xl p-5"
+              style="
+                background:rgba(255,255,255,0.025);
+                border:1px solid var(--border);
+              "
+            >
+
+              <div class="text-xs font-semibold mb-4">
+                ${escapeHTML(block.right.label)}
+              </div>
+
+              <div class="space-y-3">
+
+                ${block.right.items.map(item => `
+
+                  <div class="text-sm muted leading-6">
+                    ${escapeHTML(item)}
+                  </div>
+
+                `).join("")}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       TIMELINE
+       ========================================================= */
+
+    function renderTimeline(block) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7 md:p-8">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Timeline")}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <div class="mt-7 space-y-5">
+
+            ${(block.items || []).map(item => `
+
+              <div class="flex gap-5">
+
+                <div
+                  class="w-[72px] shrink-0
+                         text-xs font-semibold accent"
+                >
+                  ${escapeHTML(item.period)}
+                </div>
+
+                <div>
+
+                  <div class="text-sm font-semibold">
+                    ${escapeHTML(item.title)}
+                  </div>
+
+                  <p class="text-sm muted leading-6 mt-1">
+                    ${escapeHTML(item.body)}
+                  </p>
+
+                </div>
+
+              </div>
+
+            `).join("")}
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       OPPORTUNITY
+       ========================================================= */
+
+    function renderOpportunity(block) {
+
+      return `
+
+        <article
+          class="rounded-2xl p-7 md:p-8"
+          style="
+            background:linear-gradient(
+              135deg,
+              rgba(97,212,195,0.09),
+              rgba(15,29,48,0.65)
+            );
+            border:1px solid rgba(97,212,195,0.15);
+          "
+        >
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Strategic opportunity")}
+          </div>
+
+          <h2 class="text-xl md:text-2xl font-semibold tracking-tight">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="mt-4 text-sm md:text-[15px] leading-7 soft max-w-3xl">
+            ${escapeHTML(block.body)}
+          </p>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       QUESTION
+       ========================================================= */
+
+    function renderQuestion(block) {
+
+      return `
+
+        <article class="glass-strong rounded-2xl p-7 md:p-8">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Executive question")}
+          </div>
+
+          <h2
+            class="text-xl md:text-2xl
+                   font-semibold tracking-tight
+                   leading-8"
+          >
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="mt-4 text-sm leading-7 muted max-w-3xl">
+            ${escapeHTML(block.body)}
+          </p>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       EVIDENCE
+       ========================================================= */
+
+    function renderEvidence(block) {
+
+      return `
+
+        <article class="glass rounded-2xl p-7">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(block.eyebrow || "Evidence")}
+          </div>
+
+          <h2 class="text-xl font-semibold">
+            ${escapeHTML(block.title)}
+          </h2>
+
+          <p class="text-sm muted leading-7 mt-4">
+            ${escapeHTML(block.body)}
+          </p>
+
+          ${
+            block.source
+              ? `
+                <div class="mt-5 pt-4 border-t divider">
+                  <div class="text-[10px] uppercase tracking-[0.12em] muted">
+                    Source
+                  </div>
+
+                  <div class="text-xs soft mt-2">
+                    ${escapeHTML(block.source)}
+                  </div>
+                </div>
+              `
+              : ""
+          }
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       RIGHT RAIL
+       ========================================================= */
+
+    function renderRail() {
+
+      const r = SVA_CASE.rail;
+
+      document.getElementById("rail").innerHTML = `
+
+        <!-- CORE VALUE -->
+
+        <div class="glass rounded-2xl p-6">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(r.value.label)}
+          </div>
+
+          <div class="text-xl font-semibold tracking-tight">
+            ${escapeHTML(r.value.value)}
+          </div>
+
+          <p class="text-xs muted leading-6 mt-3">
+            ${escapeHTML(r.value.note)}
+          </p>
+
+        </div>
+
+
+        <!-- DECISION LENS -->
+
+        <div class="glass rounded-2xl p-6">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(r.decision.label)}
+          </div>
+
+          <div class="text-lg font-semibold">
+            ${escapeHTML(r.decision.value)}
+          </div>
+
+          <p class="text-xs muted leading-6 mt-3">
+            ${escapeHTML(r.decision.note)}
+          </p>
+
+        </div>
+
+
+        <!-- METRIC -->
+
+        <div class="glass rounded-2xl p-6">
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(r.metric.label)}
+          </div>
+
+          <div class="text-3xl font-semibold metric-value accent">
+            ${escapeHTML(r.metric.value)}
+          </div>
+
+          <p class="text-xs muted leading-6 mt-3">
+            ${escapeHTML(r.metric.note)}
+          </p>
+
+        </div>
+
+
+        ${
+          r.miniChart && r.miniChart.enabled
+            ? `
+              <div class="glass rounded-2xl p-6">
+
+                <div class="eyebrow mb-4">
+                  Revenue position
+                </div>
+
+                <div class="h-[150px]">
+                  <canvas id="miniChart"></canvas>
+                </div>
+
+              </div>
+            `
+            : ""
+        }
+
+
+        <!-- UNRESOLVED QUESTION -->
+
+        <div
+          class="rounded-2xl p-6"
+          style="
+            background:rgba(97,212,195,0.045);
+            border:1px solid rgba(97,212,195,0.14);
+          "
+        >
+
+          <div class="eyebrow mb-3">
+            ${escapeHTML(SVA_CASE.unresolvedQuestion.eyebrow)}
+          </div>
+
+          <div class="text-sm font-semibold leading-6">
+            ${escapeHTML(SVA_CASE.unresolvedQuestion.title)}
+          </div>
+
+          <p class="text-xs muted leading-6 mt-3">
+            ${escapeHTML(SVA_CASE.unresolvedQuestion.body)}
+          </p>
+
+        </div>
+
+      `;
+
+
+      if (r.miniChart && r.miniChart.enabled) {
+
+        const ctx = document
+          .getElementById("miniChart")
+          .getContext("2d");
+
+        new Chart(ctx, {
+
+          type: "bar",
+
+          data: {
+
+            labels: r.miniChart.labels,
+
+            datasets: [{
+
+              data: r.miniChart.data,
+
+              borderColor: "#61d4c3",
+
+              backgroundColor: "rgba(97,212,195,0.30)",
+
+              borderWidth: 1,
+
+              borderRadius: 3
+
+            }]
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+
+            scales: {
+
+              x: {
+                display: false
+              },
+
+              y: {
+                display: false
+              }
+
+            }
+
+          }
+
+        });
+
+      }
+
+    }
+
+
+    /* =========================================================
+       BRIEFING / CTA
+       ========================================================= */
+
+    function renderBriefing() {
+
+      const b = SVA_CASE.briefing;
+
+      document.getElementById("briefingSection").innerHTML = `
+
+        <div
+          class="rounded-2xl p-8 md:p-10"
+          style="
+            background:
+              linear-gradient(
+                135deg,
+                rgba(20,42,61,0.92),
+                rgba(8,18,31,0.95)
+              );
+            border:1px solid rgba(97,212,195,0.15);
+          "
+        >
+
+          <div class="eyebrow mb-4">
+            ${escapeHTML(b.eyebrow)}
+          </div>
+
+          <h2
+            class="text-2xl md:text-3xl
+                   font-semibold tracking-tight"
+          >
+            ${escapeHTML(b.title)}
+          </h2>
+
+          <p
+            class="mt-4 text-sm md:text-[15px]
+                   leading-7 soft max-w-3xl"
+          >
+            ${escapeHTML(b.body)}
+          </p>
+
+
+          <!-- PRIMARY BRIEFING CTA -->
+
+          <div class="mt-7">
+
+            <a
+              href="${escapeHTML(b.ctaUrl)}"
+              class="cta-button"
+            >
+
+              ${escapeHTML(b.ctaLabel)}
+
+              <span aria-hidden="true">
+                →
+              </span>
+
+            </a>
+
+          </div>
+
+
+          <!-- ORIGINAL CONVERSATION CTA -->
+
+          <div class="mt-8 pt-7 border-t divider">
+
+            <div class="text-xs muted mb-3">
+              Prefer to discuss the assessment directly?
+            </div>
+
+            <a
+              href="mailto:${escapeHTML(b.conversationEmail)}?subject=SVA%20%E2%80%94%2020-minute%20conversation"
+              class="cta-button"
+            >
+
+              ${escapeHTML(b.conversationLabel)}
+
+              <span aria-hidden="true">
+                →
+              </span>
+
+            </a>
+
+            <div class="mt-3 text-xs muted">
+              ${escapeHTML(b.conversationEmail)}
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       META
+       ========================================================= */
+
+    function renderMeta() {
+
+      document.getElementById("metaLine").innerHTML = `
+
+        ${escapeHTML(SVA_CASE.company)}
+        <span class="mx-2 opacity-40">·</span>
+        ${escapeHTML(SVA_CASE.recipient)}
+        <span class="mx-2 opacity-40">·</span>
+        ${escapeHTML(SVA_CASE.date)}
+        <span class="mx-2 opacity-40">·</span>
+        ${escapeHTML(SVA_CASE.presentationId)}
+
+      `;
+
+    }
+
+
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
+
+    function initializeExperience() {
+
+      renderMeta();
+
+      renderThesis();
+
+      renderHeroMetrics();
+
+      const narrative =
+        document.getElementById("narrative");
+
+      narrative.innerHTML = "";
+
+      SVA_CASE.narrative.forEach((block, index) => {
+
+        narrative.innerHTML +=
+          renderBlock(block, index);
+
+      });
+
+      renderRail();
+
+      renderBriefing();
+
+    }
+
+
+    /* =========================================================
+       ACCESS
+       ========================================================= */
+
+    function unlockExperience() {
+
+      const entered =
+        document.getElementById("accessKey").value;
+
+      const error =
+        document.getElementById("accessError");
+
+      if (entered === SVA_CASE.accessKey) {
+
+        document
+          .getElementById("accessOverlay")
+          .classList.add("hidden");
+
+        document
+          .getElementById("experience")
+          .classList.remove("hidden");
+
+        initializeExperience();
+
+      } else {
+
+        error.textContent =
+          "Access key not recognised.";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       ENTER KEY SUPPORT
+       ========================================================= */
+
+    document
+      .getElementById("accessKey")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+          unlockExperience();
+
+        }
+
+      });
+
+  </script>
+
+</body>
+</html>
